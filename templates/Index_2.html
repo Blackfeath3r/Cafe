@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://127.0.0.1:5000/#gallery -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>NosCafe</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link href="{{ url_for('static', filename='img/favicon.ico')}}" rel="icon">
+  <link href="{{ url_for('static', filename='img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/aos/aos.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{ url_for('static', filename='css/main.css')}}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Yummy
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <a href="/" class="logo d-flex align-items-center me-auto me-lg-0">
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1>NosCafe<span>.</span></h1>
+      </a>
+
+      <nav id="navbar" class="navbar">
+      </nav><!-- .navbar -->
+
+
+
+    </div>
+  </header>
+<body data-aos-easing="ease-in-out" data-aos-duration="1000" data-aos-delay="0">
+
+
+  <!-- ======= Hero Section ======= -->
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero d-flex align-items-center section-bg">
+    <div class="container">
+      <div class="row justify-content-between gy-5">
+        <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
+          <h2 data-aos="fade-up" class="aos-init aos-animate">Know your local <span>cafes</span></h2>
+          <p data-aos="fade-up" data-aos-delay="100" class="aos-init aos-animate">Sed autem laudantium dolores. Voluptatem itaque ea consequatur eveniet. Eum quas beatae cumque eum quaerat.</p>
+          <div class="d-flex aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+            <a href="{{url_for('add')}}" class="btn-book-a-table">Add a Cafe</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section><!-- End Hero Section -->
+
+  <main id="main">
+
+    <!-- ======= Events Section ======= -->
+  <section id="gallery">
+  <div class="container">
+    <div class="row">
+      {% for cafe in cafes %}
+    <div class="col-lg-4 mb-4 ">
+    <div class="card h-100">
+      <div style="height:240px;background-image: url({{cafe.img_url}});background-size:400px"></div>
+      <div class="card-body align-text-end">
+        <h5 class="card-title">{{cafe.name}}</h5>
+        <a href="{{cafe.map_url}}" target="_blank" rel="noopener noreferrer">{{cafe.location}}</a>
+         <ul class="list-group list-group-flush p-2">
+
+                            {% for text, check in (('Has sockets', cafe.has_sockets),
+                                                   ('Has toilet', cafe.has_toilet),
+                                                   ('Has wifi', cafe.has_wifi),
+                                                   ('Can take calls', cafe.can_take_calls)) %}
+
+                                <li class="list-group-item w-100 d-flex justify-content-between px-5  ">
+                                    <span>{{ text }}:</span>
+                                    {% if check %}
+                                        <i class="bi bi-check"></i>
+                                    {% else %}
+                                        <i class="bi bi-x-circle-fill"></i>
+                                    {% endif %}
+                                </li>
+
+                            {% endfor %}
+                            {% for text, info in (('Seats', cafe.seats), ('Coffee price', cafe.coffee_price))%}
+                                <li class="list-group-item w-100 d-flex justify-content-between px-5  ">
+                                  <span>{{ text }}:</span>
+                                  <span>{{info}}</span>
+                                </li>
+                            {% endfor %}
+         </ul>
+       <a href="{{url_for('cafe', cafe_id=cafe.id)}}" class="btn btn-outline-success btn-sm">Read More</a>
+      </div>
+     </div>
+    </div>
+      {% endfor %}
+
+  </div>
+    <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-end">
+    <li class="page-item {{previous}}">
+      <a class="page-link" href="{{url_for('pages', num=page_num -1)}}" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="{{url_for('home')}}">1</a></li>
+    <li class="page-item"><a class="page-link" href="{{url_for('pages', num=2)}}">2</a></li>
+    <li class="page-item"><a class="page-link" href="{{url_for('pages', num=3)}}">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="{{url_for('pages', num=page_num +1)}}">Next</a>
+    </li>
+  </ul>
+</nav>
+</div>
+
+</section>
+<!-- End Events Section -->
+
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container">
+      <div class="row gy-3">
+
+
+        <div class="col-lg-3 col-md-6 footer-links">
+          <h4>Follow Us</h4>
+          <div class="social-links d-flex">
+            <a href="http://127.0.0.1:5000/#" class="twitter"><i class="bi bi-twitter"></i></a>
+            <a href="http://127.0.0.1:5000/#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="http://127.0.0.1:5000/#" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="http://127.0.0.1:5000/#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        © Copyright <strong><span>NosCafe</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+
+  </footer><!-- End Footer -->
+  <!-- End Footer -->
+
+  <a href="http://127.0.0.1:5000/#" class="scroll-top d-flex align-items-center justify-content-center active"><i class="bi bi-arrow-up-short"></i></a>
+
+  
+
+  <!-- Vendor JS Files -->
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='vendor/aos/aos.js')}}"></script>
+  <script src="{{ url_for('static', filename='vendor/glightbox/js/glightbox.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='vendor/purecounter/purecounter_vanilla.js')}}"></script>
+  <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='vendor/php-email-form/validate.js')}}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{ url_for('static', filename='js/main.js')}}"></script>
+
+
+
+</body></html>
